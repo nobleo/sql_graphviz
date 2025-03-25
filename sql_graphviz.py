@@ -66,6 +66,10 @@ def join_string_act(s, loc, tok):
     return "".join(tok).replace('\n', '\\n')
 
 
+def dot_statement_act(s, loc, tok):
+    return tok['statement']
+
+
 def quoted_default_value_act(s, loc, tok):
     return tok[0] + " " + "".join(tok[1::])
 
@@ -138,8 +142,14 @@ def grammar():
     comment_def = "--" + ZeroOrMore(CharsNotIn("\n"))
     comment_def.setParseAction(other_statement_act)
 
+    dot_statement_def = "-- @DOT" + ZeroOrMore(CharsNotIn("\n")).setResultsName(
+        "statement"
+    )
+    dot_statement_def.setParseAction(dot_statement_act)
+
     return OneOrMore(
-        comment_def
+        dot_statement_def
+        | comment_def
         | create_table_def
         | add_fkey_def
         | other_statement_def
