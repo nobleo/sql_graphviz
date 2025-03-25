@@ -22,7 +22,12 @@ def field_act(s, loc, tok):
     fieldName = tok[0].replace('"', '')
     fieldSpec = html.escape(' '.join(tok[1::]).replace('"', '\\"'))
     # Don't try and format this HTML text string - DOT files are whitespace sensitive
-    return '''<tr><td bgcolor="grey96" align="left" port="{0}"><font face="Times-bold"> {0} </font></td><td align="left" port="{0}_right"><font color="#535353"> {1} </font></td></tr>'''.format(fieldName, fieldSpec)
+    return '''<tr><td bgcolor="{2}" align="left" port="{0}"><font face="Times-bold"> {0} </font></td><td align="left" port="{0}_right" bgcolor="{3}"><font color="#535353"> {1} </font></td></tr>'''.format(
+        fieldName,
+        fieldSpec,
+        "grey86" if "PRIMARY KEY" in fieldSpec else "grey96",
+        "grey86" if "PRIMARY KEY" in fieldSpec else "white",
+    )
 
 
 def field_list_act(s, loc, tok):
